@@ -1,5 +1,9 @@
 import { Outlet, Link } from "react-router-dom";
 
+const handleLogout = () => {
+  localStorage.removeItem("user");
+}
+
 const Layout = () => {
   return (
     <>
@@ -9,25 +13,16 @@ const Layout = () => {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/admin">Administration</Link>
+            <Link to="/administration">Administration</Link>
           </li>
           <li>
-            <Link to="/issues">Issues</Link>
-          </li>
-          <li>
-            <Link to="/projects">Projects</Link>
-          </li>
-          <li>
-            <Link to="/quality-gates">Quality Gates</Link>
-          </li>
-          <li>
-            <Link to="/quality-profile">Quality Profile</Link>
+            <Link to="/profile">Profile</Link>
           </li>
           <li>
             <Link to="/login">Login</Link>
           </li>
-          <li>
-            <Link to="/logout">Logout</Link>
+          <li style={{cursor:"pointer"}} onClick={handleLogout}>
+            Logout
           </li>
         </ul>
       </nav>

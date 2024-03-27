@@ -19,7 +19,7 @@ export class UsersController {
 
     // only should be accessed by admin
     // also send emails
-    // @UseGuards(AuthenticationGuard)
+    @UseGuards(AuthenticationGuard)
     @UseGuards(AuthorizeGuard([Roles.ADMIN]))
     @Post()
     async createUser(@Body() body: CreateUserDto){
@@ -37,14 +37,15 @@ export class UsersController {
     }
 
 
-    // @UseGuards(AuthenticationGuard)
+    @UseGuards(AuthenticationGuard)
     // have authentication 
     @Put('/:id')
     async updateUser(@Param('id') id:string, @Body() body: UdpateUserDto){
         return this.usersService.update(parseInt(id), body);
     }
 
-    // @UseGuards(AuthenticationGuard)
+    @UseGuards(AuthenticationGuard)
+    @UseGuards(AuthorizeGuard([Roles.ADMIN]))
     // only admin access
     @Delete('/:id')
     async deleteUser(@Param('id') id:string){
