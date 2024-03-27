@@ -1,0 +1,79 @@
+### Signing Up the user
+POST http://localhost:5000/users/  
+Content-Type: application/json
+
+{
+    "username": "test1",
+    "email": "test@gmail.com",
+    "password": "root"
+}
+
+## Get User Profile
+GET http://localhost:5000/users/profile
+
+### Create a Group
+POST http://localhost:5000/groups/
+Content-Type: application/json
+
+{
+    "groupName": "group5",
+    "groupDesc": "This is default group created for all user"
+}
+
+### Create a Action
+POST http://localhost:5000/groups/actions/
+Content-Type: application/json
+
+{
+    "actionName": "action10",
+    "actionDesc": "Checks the quality of the user"
+}
+
+### Create a Group Action
+POST http://localhost:5000/groups/add-action/
+Content-Type: application/json
+
+{
+    "actionId": 2,
+    "groupId": 3
+}
+
+### Get a list of action for a group
+GET http://localhost:5000/groups/actions/3
+
+### Create a new user
+POST http://localhost:5000/users/
+Content-Type: application/json
+
+{
+    "name": "user1",
+    "email": "tes1dfsft@gmail.com",
+    "password": "79798797sfldjflf"
+}
+
+### Assing User a group
+POST http://localhost:5000/users/group
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "groupId": 3
+}
+
+### Get Users Belong To Which Group
+GET http://localhost:5000/users/groups/1
+
+### Get Users Which Action Is Allowed
+GET http://localhost:5000/users/profile
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcxMTUzNjU2OCwiZXhwIjoxNzExNTM2NTcxfQ.8hVDLtxlLnvwTQZTW2qUg7iyK6Z_0nyX5QiipOIxpzs
+
+
+### Logining a user
+POST http://localhost:5000/users/login/
+Content-Type: application/json
+
+{
+    "email": "test@gmail.com",
+    "password": "root"
+}
+
