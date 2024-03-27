@@ -5,17 +5,19 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_PIPE } from '@nestjs/core';
 import { CurrentUserMiddleware } from './users/middlewares/current-user.middleware';
+import dataSource, { dataSourceOptions } from 'db/data-source';
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      useFactory: () => ({
-        type: 'sqlite',
-        database: 'database.sqlite',
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true,
-      }),
-    }),
+    // TypeOrmModule.forRootAsync({
+    //   useFactory: () => ({
+    //     type: 'sqlite',
+    //     database: 'database.sqlite',
+    //     entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    //     synchronize: true,
+    //   }),
+    // }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     UsersModule,
   ],
   controllers: [AppController],

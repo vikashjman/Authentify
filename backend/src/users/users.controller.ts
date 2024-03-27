@@ -6,6 +6,8 @@ import { UdpateUserDto } from './dtos/update-user.dto';
 import { AuthenticationGuard } from 'src/utils/guards/authentication.gaurd';
 import { CurrentUser } from 'src/utils/decorators/current-user.decorator';
 import { User } from './entities/users.entity';
+import { AuthorizeGuard } from 'src/utils/guards/authorization.gaurd';
+import { Roles } from 'src/utils/common/user-roles.enum';
 
 @Controller('users')
 export class UsersController {
@@ -18,6 +20,7 @@ export class UsersController {
     // only should be accessed by admin
     // also send emails
     // @UseGuards(AuthenticationGuard)
+    @UseGuards(AuthorizeGuard([Roles.ADMIN]))
     @Post()
     async createUser(@Body() body: CreateUserDto){
         const user = await this.usersService.signup(body.username, body.email, body.password);
@@ -25,7 +28,7 @@ export class UsersController {
     }
 
 
-    // user will login using email and password
+    // user will login using whaemail and password
     @Post('login')
     async loginUser(@Body() body: LoginUserDto){
         const user = await this.usersService.signin(body.email, body.password);
