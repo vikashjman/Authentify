@@ -23,7 +23,7 @@ export class UsersController {
     @UseGuards(AuthorizeGuard([Roles.ADMIN]))
     @Post()
     async createUser(@Body() body: CreateUserDto){
-        const user = await this.usersService.signup(body.username, body.email, body.password);
+        const user = await this.usersService.signup(body.username, body.email);
         return user;
     }
 
@@ -58,6 +58,13 @@ export class UsersController {
     @Get('profile')
     async userProfile(@CurrentUser() currentUser: User){
         return currentUser;
+    }
+
+    @UseGuards(AuthenticationGuard)
+    @UseGuards(AuthorizeGuard([Roles.ADMIN]))
+    @Get("/")
+    async getAllUser(){
+        return this.usersService.findall();
     }
 
 

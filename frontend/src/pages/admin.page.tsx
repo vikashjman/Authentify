@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { createNewUser } from "../api/api";
+import { createNewUser, fetchAllUsers } from "../api/api";
 
 const Admin = () => {
 
@@ -12,7 +12,8 @@ const Admin = () => {
 
   useEffect(() => {
     const getAllUser = async () => {
-
+      const res = await fetchAllUsers();
+      console.log(res.data)
     }
     getAllUser();
   }, [])
@@ -28,7 +29,7 @@ const Admin = () => {
     const newUser = await createNewUser(user);
     console.log(newUser);
   }
-  
+
   return (
     <>
       <div>Admin</div>

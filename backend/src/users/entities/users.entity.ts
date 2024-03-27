@@ -23,6 +23,8 @@ export class User {
     roles: Roles;
     @CreateDateColumn()
     createdAt: Timestamp;
+    @Column({default:true})
+    resetflag:Boolean;
     @UpdateDateColumn()
     updatedAt: Timestamp;
 }

@@ -7,6 +7,7 @@ import { promisify } from "util";
 import { sign } from "jsonwebtoken"
 
 import 'dotenv/config'
+import { EmailService } from "./email.service";
 
 const scrypt = promisify(_scrypt);
 
@@ -15,6 +16,7 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private userRepo: Repository<User>,
+        private emailService: EmailService
     ) { }
 
     create(username: string, email: string, password: string) {
@@ -40,7 +42,19 @@ export class UsersService {
         return user;
     }
 
-    async signup(username: string, email: string, password: string) {
+    generateRandomPassword() {
+        const length = 10; // Set the desired length of the random password
+        const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=';
+        let randomPassword = '';
+
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            randomPassword += charset[randomIndex];
+        }
+        return randomPassword;
+    }
+    async signup(username: string, email: string) {
+        const password = this.generateRandomPassword();
         // see if email is in use
         const users = await this.find(email);
         if (users.length) {
@@ -57,7 +71,12 @@ export class UsersService {
         const result = salt + '.' + hash.toString('hex');
 
         // Create a new user and save it
-        const user = await this.create(username, email, result);
+        // const user = await this.create(username, email, result);
+
+
+        const user = this.userRepo.create({ username, email, password:result });
+        // return this.userRepo.save(user)
+        await this.emailService.sendEmail(username, email, password)
 
         delete user.password;
 
@@ -99,9 +118,9 @@ export class UsersService {
     }
 
     async findOne(id: number) {
-        console.log("from service",id)
-        const user = await  this.userRepo.find({ where: { id } });
-        console.log("from service user",user);
+        console.log("from service", id)
+        const user = await this.userRepo.find({ where: { id } });
+        console.log("from service user", user);
         return user;
     }
 
