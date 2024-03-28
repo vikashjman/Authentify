@@ -8,6 +8,7 @@ import { CurrentUser } from 'src/utils/decorators/current-user.decorator';
 import { User } from './entities/users.entity';
 import { AuthorizeGuard } from 'src/utils/guards/authorization.gaurd';
 import { Roles } from 'src/utils/common/user-roles.enum';
+import { ResetPasswordDto } from './dtos/password-reset.dto';
 
 @Controller('users')
 export class UsersController {
@@ -65,6 +66,22 @@ export class UsersController {
     @Get("/")
     async getAllUser(){
         return this.usersService.findall();
+    }
+
+    @Put("/reset-password/:id")
+    async resetPassword(@Param('id') id: string, @Body() body: ResetPasswordDto) {
+        const { oldPassword, newPassword } = body;
+
+        // Verify old password before proceeding
+        const isOldPasswordValid = await this.usersService.verifyPassword(parseInt(id), oldPassword);
+        if (!isOldPasswordValid) {
+            throw new Error('Invalid old password');
+        }
+
+        // Update the user's password in the database
+        await this.usersService.updatePassword(parseInt(id), newPassword);
+
+        return { message: 'Password reset successful!' };
     }
 
 

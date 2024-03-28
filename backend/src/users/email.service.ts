@@ -6,9 +6,9 @@ import * as nodemailer from 'nodemailer'
 
 @Injectable()
 export class EmailService {
-    private transporter = nodemailer.createTransport({
+    // private transporter = nodemailer.createTransport({
 
-    })
+    // })
     async sendEmail(username:string, email:string, password:string){
         const mailOptions = {
             from: 'your-email@example.com',
@@ -28,7 +28,7 @@ export class EmailService {
             `,
           };
       
-          await this.transporter.sendMail(mailOptions);
+        //   await this.transporter.sendMail(mailOptions);
     }
 
    

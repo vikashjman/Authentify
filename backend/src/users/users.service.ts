@@ -71,12 +71,12 @@ export class UsersService {
         const result = salt + '.' + hash.toString('hex');
 
         // Create a new user and save it
-        // const user = await this.create(username, email, result);
+        const user = await this.create(username, email, result);
 
 
-        const user = this.userRepo.create({ username, email, password:result });
-        // return this.userRepo.save(user)
-        await this.emailService.sendEmail(username, email, password)
+        // const user = this.userRepo.create({ username, email, password:result });
+        // return await this.userRepo.save(user)
+        // await this.emailService.sendEmail(username, email, password)
 
         delete user.password;
 
@@ -124,6 +124,31 @@ export class UsersService {
         return user;
     }
 
+
+    async verifyPassword(id: number, password: string): Promise<boolean> {
+        const user = await this.userRepo.findOne({ where: { id } });
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        const [salt, storedHash] = user.password.split('.');
+
+        const hash = (await scrypt(password, salt, 32)) as Buffer;
+        return storedHash === hash.toString('hex');
+    }
+
+    async updatePassword(id: number, newPassword: string) {
+        const user = await this.userRepo.findOne({ where: { id } });
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        // Hash the new password and update it in the database
+        const salt = randomBytes(8).toString('hex');
+        const hash = (await scrypt(newPassword, salt, 32)) as Buffer;
+        user.password = salt + '.' + hash.toString('hex');
+        await this.userRepo.save(user);
+    }
 
 
     // createUserGroup(groupId: number, userId: number) {

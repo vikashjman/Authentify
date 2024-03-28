@@ -21,3 +21,17 @@ export const isAuthenticated = (role: string | null = null) => {
     return false;
   }
 };
+
+export const needsReset = () => {
+    const userStr = localStorage.getItem("user");
+    if(!userStr) return false;
+
+    try{
+      const user = JSON.parse(userStr);
+      
+      return user.resetflag;
+    }catch(err){
+      console.log(err)
+      return false;
+    }
+}

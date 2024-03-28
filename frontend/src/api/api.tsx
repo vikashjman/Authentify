@@ -21,7 +21,8 @@ API.interceptors.request.use(req => {
 
 export const getUserLogin = (data:any) => API.post('/users/login', data);
 export const createNewUser = (data:any) => API.post('/users/', data);
-export const fetchAllUsers = () => API.get("/users/")
+export const fetchAllUsers = () => API.get("/users/");
+export const resetPassword = (id:any, data:any) => API.put(`/reset-password/${id}`, data)
 
 
 // export const postLogin = formData => API.post('/users/login/', formData)

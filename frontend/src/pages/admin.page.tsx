@@ -13,7 +13,7 @@ const Admin = () => {
   useEffect(() => {
     const getAllUser = async () => {
       const res = await fetchAllUsers();
-      console.log(res.data)
+      setAllUsers(res.data)
     }
     getAllUser();
   }, [])
@@ -26,8 +26,9 @@ const Admin = () => {
   // handle submit 
 
   const handleClick = async () => {
-    const newUser = await createNewUser(user);
-    console.log(newUser);
+    const newUser:any = await createNewUser(user);
+    // setAllUsers([...allUsers,newUser])
+    console.log(newUser)
   }
 
   return (
@@ -45,7 +46,7 @@ const Admin = () => {
           <>
             <h1>{user.username}</h1>
             <p>{user.email}</p>
-            <p>{user.roles[0]}</p>
+            {/* <p>{user.roles[0]}</p> */}
           </>
         )
       })}

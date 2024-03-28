@@ -29,7 +29,10 @@ const Login = () => {
 
     setUserData({ email: "", password: "" });
     console.log(user);
-    navigate("/administration")
+    if(user.roles.includes('admin'))
+     navigate("/administration");
+    else
+      navigate("/")
   };
 
   return (
