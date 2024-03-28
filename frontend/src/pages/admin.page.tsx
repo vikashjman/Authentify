@@ -6,8 +6,7 @@ const Admin = () => {
   const [allUsers, setAllUsers] = useState([])
   const [user, setUser] = useState({
     username: "",
-    email: "",
-    password: ""
+    email: ""
   });
 
   useEffect(() => {
@@ -38,7 +37,7 @@ const Admin = () => {
 
       <input type="text" name="username" value={user.username} onChange={(e) => handleChange(e)}></input>
       <input type="email" name="email" value={user.email} onChange={(e) => handleChange(e)}></input>
-      <input type="password" name="password" value={user.password} onChange={(e) => handleChange(e)}></input>
+      {/* <input type="password" name="password" value={user.password} onChange={(e) => handleChange(e)}></input> */}
       <button onClick={handleClick}>Submit</button>
 
       {allUsers.map((user: any) => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getUserLogin } from "../api/api";
 import { useNavigate } from "react-router-dom";
-import { isAuthenticated } from "../utils/authUtils";
+import { isAuthenticated, needsReset } from "../utils/authUtils";
 
 const Login = () => {
 
@@ -16,8 +16,10 @@ const Login = () => {
 
   useEffect(() => {
       const isAuth = isAuthenticated();
+      const toReset = needsReset();
+      if(toReset) navigate("/reset-password")
       if(isAuth) navigate("/")
-  },[])
+  },[]);
 
   const handleLogin = async(e:any) => {
     e.preventDefault();
@@ -31,6 +33,8 @@ const Login = () => {
     console.log(user);
     if(user.roles.includes('admin'))
      navigate("/administration");
+    else if(needsReset())
+      navigate("/reset-password")
     else
       navigate("/")
   };

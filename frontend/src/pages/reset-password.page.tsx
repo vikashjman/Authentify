@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { resetPassword } from '../api/api';
+import { needsReset } from '../utils/authUtils';
+import { useNavigate } from 'react-router-dom';
 
 const ResetPassword = () => {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [resetMessage, setResetMessage] = useState('');
+
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if(!needsReset()) navigate("/profile");
+  },[])
 
   const handleResetPassword = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior

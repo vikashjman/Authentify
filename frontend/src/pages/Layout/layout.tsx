@@ -1,10 +1,12 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 
-const handleLogout = () => {
-  localStorage.removeItem("user");
-}
 
 const Layout = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login")
+  }
   return (
     <>
       <nav>

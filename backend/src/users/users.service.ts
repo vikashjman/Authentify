@@ -76,7 +76,7 @@ export class UsersService {
 
         // const user = this.userRepo.create({ username, email, password:result });
         // return await this.userRepo.save(user)
-        // await this.emailService.sendEmail(username, email, password)
+        await this.emailService.sendEmail(username, email, password)
 
         delete user.password;
 
