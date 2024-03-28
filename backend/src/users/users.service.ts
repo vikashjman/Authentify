@@ -7,6 +7,7 @@ import { promisify } from "util";
 import { sign } from "jsonwebtoken"
 
 import 'dotenv/config'
+import { EmailService } from "./email.service";
 
 const scrypt = promisify(_scrypt);
 
@@ -15,6 +16,7 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private userRepo: Repository<User>,
+        private emailService: EmailService
     ) { }
 
     create(username: string, email: string, password: string) {
@@ -24,7 +26,7 @@ export class UsersService {
 
     async signin(email: string, password: string) {
         const [user] = await this.find(email);
-        console.log(user)
+        console.log("user service sigin", user, email, password)
         if (!user) {
             throw new NotFoundException('user not found!');
         }
@@ -40,7 +42,19 @@ export class UsersService {
         return user;
     }
 
-    async signup(username: string, email: string, password: string) {
+    generateRandomPassword() {
+        const length = 10; // Set the desired length of the random password
+        const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=';
+        let randomPassword = '';
+
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            randomPassword += charset[randomIndex];
+        }
+        return randomPassword;
+    }
+    async signup(username: string, email: string) {
+        const password = this.generateRandomPassword();
         // see if email is in use
         const users = await this.find(email);
         if (users.length) {
@@ -58,6 +72,11 @@ export class UsersService {
 
         // Create a new user and save it
         const user = await this.create(username, email, result);
+
+
+        // const user = this.userRepo.create({ username, email, password:result });
+        // return await this.userRepo.save(user)
+        await this.emailService.sendEmail(username, email, password)
 
         delete user.password;
 
@@ -99,12 +118,37 @@ export class UsersService {
     }
 
     async findOne(id: number) {
-        console.log("from service",id)
-        const user = await  this.userRepo.find({ where: { id } });
-        console.log("from service user",user);
+        console.log("from service", id)
+        const user = await this.userRepo.find({ where: { id } });
+        console.log("from service user", user);
         return user;
     }
 
+
+    async verifyPassword(id: number, password: string): Promise<boolean> {
+        const user = await this.userRepo.findOne({ where: { id } });
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        const [salt, storedHash] = user.password.split('.');
+
+        const hash = (await scrypt(password, salt, 32)) as Buffer;
+        return storedHash === hash.toString('hex');
+    }
+
+    async updatePassword(id: number, newPassword: string) {
+        const user = await this.userRepo.findOne({ where: { id } });
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        // Hash the new password and update it in the database
+        const salt = randomBytes(8).toString('hex');
+        const hash = (await scrypt(newPassword, salt, 32)) as Buffer;
+        user.password = salt + '.' + hash.toString('hex');
+        await this.userRepo.save(user);
+    }
 
 
     // createUserGroup(groupId: number, userId: number) {
