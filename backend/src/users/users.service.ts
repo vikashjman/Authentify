@@ -7,7 +7,8 @@ import { promisify } from "util";
 import { sign } from "jsonwebtoken"
 
 import 'dotenv/config'
-import { EmailService } from "./email.service";
+import { MailService } from "src/mail/mail.service";
+
 
 const scrypt = promisify(_scrypt);
 
@@ -16,7 +17,7 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private userRepo: Repository<User>,
-        private emailService: EmailService
+        private emailService: MailService
     ) { }
 
     create(username: string, email: string, password: string) {
@@ -26,7 +27,6 @@ export class UsersService {
 
     async signin(email: string, password: string) {
         const [user] = await this.find(email);
-        console.log("user service sigin", user, email, password)
         if (!user) {
             throw new NotFoundException('user not found!');
         }
@@ -76,13 +76,13 @@ export class UsersService {
 
         // const user = this.userRepo.create({ username, email, password:result });
         // return await this.userRepo.save(user)
-        await this.emailService.sendEmail(username, email, password)
+        await this.emailService.nodeMailerSendMail(username, email, password);
 
         delete user.password;
 
         // return the user
         return user;
-    }
+    } 
 
     async find(email: string) {
         return this.userRepo.find({ where: { email } });
@@ -118,9 +118,7 @@ export class UsersService {
     }
 
     async findOne(id: number) {
-        console.log("from service", id)
         const user = await this.userRepo.find({ where: { id } });
-        console.log("from service user", user);
         return user;
     }
 

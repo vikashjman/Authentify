@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to Authentify</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #333;
+  }
+  .container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  p {
+    margin-bottom: 10px;
+  }
+  .footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #888;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Authentify</h1>
+    <p>Hi {{username}},</p>
+    <p>Your account has been created on our platform. Here are your login credentials:</p>
+    <ul>
+      <li><strong>Username:</strong> {{username}}</li>
+      <li><strong>Email:</strong> {{email}}</li>
+      <li><strong>Password:</strong> {{password}} <span style="color: red;">(Please change this password immediately)</span></li>
+    </ul>
+    <p>Thanks,</p>
+    <p>The Authentify Team</p>
+  </div>
+  <div class="footer">
+    <p>&copy; 2024 Authentify. All rights reserved.</p>
+  </div>
+</body>
+</html>

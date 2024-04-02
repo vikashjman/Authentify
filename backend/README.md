@@ -71,3 +71,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+INSERT INTO public."user" (username, email, password, roles, "createdAt", "updatedAt")
+-- VALUES ('admin_user', 'admin@example.com', '20ed6b2f7c97b21a.820817b1bcc683d3f624860ca380a7f3c4a772eaa80e1ee5b60f9186672f372c', '{admin}', NOW(), NOW());

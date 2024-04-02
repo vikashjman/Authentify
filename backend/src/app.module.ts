@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_PIPE } from '@nestjs/core';
 import { CurrentUserMiddleware } from './users/middlewares/current-user.middleware';
 import dataSource, { dataSourceOptions } from 'db/data-source';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import dataSource, { dataSourceOptions } from 'db/data-source';
     // }),
     TypeOrmModule.forRoot(dataSourceOptions),
     UsersModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [

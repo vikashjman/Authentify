@@ -35,8 +35,8 @@ const Admin = () => {
       <div>Admin</div>
       <h1>Create Users</h1>
 
-      <input type="text" name="username" value={user.username} onChange={(e) => handleChange(e)}></input>
-      <input type="email" name="email" value={user.email} onChange={(e) => handleChange(e)}></input>
+      <input type="text" placeholder="username" name="username" value={user.username} onChange={(e) => handleChange(e)}></input>
+      <input type="email" placeholder="email" name="email" value={user.email} onChange={(e) => handleChange(e)}></input>
       {/* <input type="password" name="password" value={user.password} onChange={(e) => handleChange(e)}></input> */}
       <button onClick={handleClick}>Submit</button>
 
