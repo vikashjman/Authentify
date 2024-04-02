@@ -5,6 +5,7 @@ import { MailService } from './mail.service';
 import { join } from 'path';
 import { MailgunModule } from 'nestjs-mailgun';
 
+// console.log(process.env.TRANSPORTER_EMAIL_PASSWORD, process.env.TRANSPORTER_EMAIL)
 @Module({
   imports: [
     MailerModule.forRoot({

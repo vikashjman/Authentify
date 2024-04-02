@@ -25,7 +25,7 @@ export class MailService {
         });
     }
     async mailGunSendMail(username: string, email: string, password: string) {
-        const templateFilePath = path.join(__dirname, 'template', 'confirmation.hbs');
+        const templateFilePath = path.join(__dirname, 'templates', 'confirmation.hbs');
         const templateContent = fs.readFileSync(templateFilePath, 'utf8');
 
         // Compile the Handlebars template

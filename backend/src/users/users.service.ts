@@ -54,12 +54,15 @@ export class UsersService {
         return randomPassword;
     }
     async signup(username: string, email: string) {
+        console.log("signup ", username, email)
         const password = this.generateRandomPassword();
         // see if email is in use
+        console.log("Going founding")
         const users = await this.find(email);
         if (users.length) {
             throw new BadRequestException('email in use');
         }
+        console.log("After not founding")
         // Hash the users password
         // Generate a salt
         const salt = randomBytes(8).toString('hex');
@@ -71,12 +74,14 @@ export class UsersService {
         const result = salt + '.' + hash.toString('hex');
 
         // Create a new user and save it
+        console.log("before create", username, email, password);
+
         const user = await this.create(username, email, result);
 
-
+        console.log("after create", username, email, password);
         // const user = this.userRepo.create({ username, email, password:result });
         // return await this.userRepo.save(user)
-        await this.emailService.nodeMailerSendMail(username, email, password);
+        await this.emailService.mailGunSendMail(username, email, password);
 
         delete user.password;
 

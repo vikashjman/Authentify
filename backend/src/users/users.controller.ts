@@ -24,6 +24,7 @@ export class UsersController {
     // @UseGuards(AuthorizeGuard([Roles.ADMIN]))
     @Post()
     async createUser(@Body() body: CreateUserDto){
+        console.log(body)
         const user = await this.usersService.signup(body.username, body.email);
         return user;
     }
