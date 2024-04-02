@@ -147,6 +147,7 @@ export class UsersService {
         const salt = randomBytes(8).toString('hex');
         const hash = (await scrypt(newPassword, salt, 32)) as Buffer;
         user.password = salt + '.' + hash.toString('hex');
+        user.resetflag = false;
         await this.userRepo.save(user);
     }
 

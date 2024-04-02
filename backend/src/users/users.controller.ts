@@ -67,7 +67,7 @@ export class UsersController {
     async getAllUser(){
         return this.usersService.findall();
     }
-
+ 
     @Put("/reset-password/:id")
     async resetPassword(@Param('id') id: string, @Body() body: ResetPasswordDto) {
         const { oldPassword, newPassword } = body;

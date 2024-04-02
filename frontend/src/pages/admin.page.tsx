@@ -17,7 +17,7 @@ const Admin = () => {
     getAllUser();
   }, [])
 
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value })
   }

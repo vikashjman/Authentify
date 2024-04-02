@@ -13,7 +13,7 @@ const ResetPassword = () => {
     if(!needsReset()) navigate("/profile");
   },[])
 
-  const handleResetPassword = async (e) => {
+  const handleResetPassword = async (e:any) => {
     e.preventDefault(); // Prevent default form submission behavior
 
     // Validation: Ensure old password and new password are not empty
@@ -27,7 +27,7 @@ const ResetPassword = () => {
 
     // Add your password reset logic here
     // Example: Call an API endpoint to reset the password
-    const id = JSON.parse(localStorage.getItem('user')).id
+    const id = JSON.parse(localStorage.getItem('user') as any).id
     await resetPassword(id,{newPassword,oldPassword})
 
     // Clear the input fields after successful reset
