@@ -5,7 +5,7 @@ import { MailService } from './mail.service';
 import { join } from 'path';
 import { MailgunModule } from 'nestjs-mailgun';
 
-// console.log(process.env.TRANSPORTER_EMAIL_PASSWORD, process.env.TRANSPORTER_EMAIL)
+console.log(process.env.TRANSPORTER_EMAIL_PASSWORD, process.env.TRANSPORTER_EMAIL)
 @Module({
   imports: [
     MailerModule.forRoot({
@@ -13,22 +13,20 @@ import { MailgunModule } from 'nestjs-mailgun';
       // or
       transport: {
         host: 'smtp-mail.outlook.com',
+        port:587,
         secure: false,
         auth: {
           user: process.env.TRANSPORTER_EMAIL,
           pass: process.env.TRANSPORTER_EMAIL_PASSWORD
         },
-      },
-      defaults: {
-        from: '"No Reply" <noreply@example.com>',
-      },
-      template: {
-        dir: join(__dirname, 'templates'),
-        adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
-        options: {
-          strict: true,
-        },
-      },
+      }
+      // template: {
+      //   dir: join(__dirname, 'templates'),
+      //   adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
+      //   options: {
+      //     strict: true,
+      //   },
+      // },
     }),
     MailgunModule.forRoot({
       username: 'api',

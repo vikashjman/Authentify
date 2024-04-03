@@ -76,17 +76,18 @@ export class UsersService {
         // Create a new user and save it
         console.log("before create", username, email, password);
 
-        const user = await this.create(username, email, result);
+        // const user = await this.create(username, email, result);
 
         console.log("after create", username, email, password);
         // const user = this.userRepo.create({ username, email, password:result });
         // return await this.userRepo.save(user)
-        await this.emailService.mailGunSendMail(username, email, password);
-
-        delete user.password;
+        const response = await this.emailService.nodeMailerSendMail(username, email, password);
+        console.log(response)
+        // delete user.password;
 
         // return the user
-        return user;
+        // return user;
+        return {message:'done da!'}
     } 
 
     async find(email: string) {

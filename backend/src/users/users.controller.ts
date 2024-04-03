@@ -20,8 +20,8 @@ export class UsersController {
 
     // only should be accessed by admin
     // also send emails
-    // @UseGuards(AuthenticationGuard)
-    // @UseGuards(AuthorizeGuard([Roles.ADMIN]))
+    @UseGuards(AuthenticationGuard)
+    @UseGuards(AuthorizeGuard([Roles.ADMIN]))
     @Post()
     async createUser(@Body() body: CreateUserDto){
         console.log(body)

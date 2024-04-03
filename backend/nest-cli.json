@@ -4,7 +4,7 @@
   "compilerOptions": {
     "assets": [{
       "include": "mail/templates/*.hbs",
-      "outDir": "dist/src/mail/templates",
+      "outDir": "dist/src/",
       "watchAssets": true
     }], 
     "watchAssets": true

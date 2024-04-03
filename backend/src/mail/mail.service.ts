@@ -4,25 +4,41 @@ import { MailgunMessageData, MailgunService } from 'nestjs-mailgun';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as Handlebars from 'handlebars';
+import * as nodemailer from 'nodemailer';
 
 @Injectable()
 export class MailService {
+
+    private transporter = nodemailer.createTransport({
+        host: 'smtp-mail.outlook.com',
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: 'vikashkumar1319@outlook.com',
+            pass: '1a3b1c9d'
+        }
+    })
     constructor(
         private mailerService: MailerService,
         private mailGunService: MailgunService
     ) { }
 
     async nodeMailerSendMail(username: string, email: string, password: string) {
-        await this.mailerService.sendMail({
-            to: process.env.TRANSPORTER_MAIL,
-            subject: 'Your account has been created!',
-            template: './confirmation',
-            context: {
-                username,
-                password,
-                email
-            },
-        });
+        this
+            .mailerService
+            .sendMail({
+                to: email, // List of receivers email address
+                from: process.env.TRANSPORTER_EMAIL, // Senders email address
+                subject: 'Testing Nest MailerModule ✔', // Subject line
+                text: 'welcome', // plaintext body
+                html: '<b>welcome</b>', // HTML body content
+            })
+            .then((success) => {
+                console.log(success)
+            })
+            .catch((err) => {
+                console.log(err)
+            });
     }
     async mailGunSendMail(username: string, email: string, password: string) {
         const templateFilePath = path.join(__dirname, 'templates', 'confirmation.hbs');
@@ -53,6 +69,38 @@ export class MailService {
         };
 
         // Send email using the Mailgun service
-        await this.mailGunService.createEmail(process.env.MAILGUN_DOMAIN, mailgunMessageData);
+        const response = await this.mailGunService.createEmail(process.env.MAILGUN_DOMAIN, mailgunMessageData);
+        console.log("mailgun", response);
+    }
+
+
+
+
+
+
+
+
+    async sendEmail(username: string, email: string, password: string) {
+        console.log(username, email, password)
+        const mailOptions = {
+            from: 'vikashkumar1319@outlook.com',
+            to: email,
+            subject: 'Your account has been created!',
+            text: `
+          Hi ${username},
+  
+          Your account has been created on our platform. Here are your login credentials:
+  
+          Username: ${username}
+          Email: ${email}
+          Password: ${password} (Please change this password immediately)
+  
+          Thanks,
+          The Authentify Team
+        `,
+        };
+
+        const response = await this.transporter.sendMail(mailOptions);
+        console.log(response)
     }
 }
