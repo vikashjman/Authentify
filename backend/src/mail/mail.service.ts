@@ -74,12 +74,6 @@ export class MailService {
     }
 
 
-
-
-
-
-
-
     async sendEmail(username: string, email: string, password: string) {
         console.log(username, email, password)
         const mailOptions = {

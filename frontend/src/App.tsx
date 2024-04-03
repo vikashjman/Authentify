@@ -14,6 +14,7 @@ interface PrivateRouteProps {
   role?: string | null;
 }
 
+// @ts-ignore
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element, role, ...rest }) => {
   const isAuthorized = role ? isAuthenticated(role) : isAuthenticated();
   return isAuthorized ? element : <Navigate to="/" />;
@@ -26,11 +27,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-
           <Route path="/administration" element={<PrivateRoute element={<Admin />} role="admin" />} />
           <Route path="login" element={<Login />} />
           <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
-          <Route path="/reset-password" element={<ResetPassword/>}/>
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

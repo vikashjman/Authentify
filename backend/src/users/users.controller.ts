@@ -16,8 +16,7 @@ export class UsersController {
     constructor(
         private usersService: UsersService
     ){}
-
-
+    
     // only should be accessed by admin
     // also send emails
     @UseGuards(AuthenticationGuard)
